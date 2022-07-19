@@ -1,4 +1,5 @@
 package com.hexa2zero.decryption;
 
-public class Decryption {
+public interface Decryption {
+    void makeDecryption(String key ,String encPassword);
 }
