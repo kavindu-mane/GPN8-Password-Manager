@@ -3,6 +3,8 @@ package com.hexa2zero.main;
 import java.util.Scanner;
 
 public class LoginRegister {
+
+    private static String userName;
     Scanner scanner = new Scanner(System.in);
     protected void register() throws Exception{
         Main.clearConsole();
@@ -17,11 +19,14 @@ public class LoginRegister {
             String tmp2 = scanner.nextLine();
             if (tmp2.length() < 9 || tmp1.length() < 6) {
                 System.out.println();
-                continue;
+            } else if (Preference.getPreferences(tmp1) != null) {
+                System.out.println(ConsoleColors.RED + "\n  \u0021\u0021 This username already reserved." + ConsoleColors.RESET);
+            }else {
+                Preference.storePreference(tmp1 , tmp2);
+                userName = tmp1;
+                break;
             }
 
-            Preference.storePreference(tmp1 , tmp2);
-            break;
         }while (true);
 
     }
@@ -38,6 +43,7 @@ public class LoginRegister {
             String tmp2 = scanner.nextLine();
 
             if (String.valueOf(Preference.getPreferences(tmp1)).equals(tmp2)) {
+                userName = tmp1;
                 return true;
             } else {
                 System.out.println(ConsoleColors.RED + "\n  \u0021\u0021 Incorrect Username Password combination." + ConsoleColors.RESET);
@@ -55,4 +61,9 @@ public class LoginRegister {
         }while (stop);
         return false;
     }
+
+    protected static String userNameGetter(){  /**for return private username filed*/
+        return userName;
+    }
+
 }

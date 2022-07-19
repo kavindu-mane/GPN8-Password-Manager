@@ -8,8 +8,13 @@ import java.util.Scanner;
 
 public class Dashboard extends Encryption implements Decryption {
     static boolean looping; /**loop state*/
-
     static Scanner scanner = new Scanner(System.in);
+    private static String USERNAME;
+
+    Dashboard(){
+        USERNAME = LoginRegister.userNameGetter();
+    }
+
     protected void menu() throws Exception{
         Main.clearConsole(); /**for clear current console*/
 
@@ -72,7 +77,7 @@ public class Dashboard extends Encryption implements Decryption {
             System.out.print("  Enter password saving key (EX: Facebook , Gmail) : ");
             key = scanner.nextLine();
             looping = false;
-            if (Preference.getPreferences(key) != null) {
+            if (Preference.getPreferences(USERNAME + "__" + key) != null) {
                 System.out.print(ConsoleColors.RED + "\n  \u0021\u0021 " + key + " is already saved key. Replace it ? (Y/Any) :" + ConsoleColors.RESET);
                 String letter = scanner.nextLine().toUpperCase();
                 if (!letter.equals("Y")) {
@@ -80,13 +85,13 @@ public class Dashboard extends Encryption implements Decryption {
                 }
             }
         }while (looping);
-        makeEncryption(String.valueOf(password) , key);
+        makeEncryption(String.valueOf(password) , USERNAME + "__"+key); /**password saving key combination ---> username__key */
     }
 
     private static void getSavedPassword(){
         System.out.print("  Enter password key : ");
         String key = scanner.nextLine();
-        String fake = Preference.getPreferences(key);
+        String fake = Preference.getPreferences(USERNAME + "__" +key);
 
         if (fake == null){
             System.out.println(ConsoleColors.RED + "  No password found.Recheck entered key and try again" + ConsoleColors.RESET +"\n");
@@ -107,8 +112,8 @@ public class Dashboard extends Encryption implements Decryption {
         System.out.print("  Are you sure delete " + key + " ? (Y/Any) : ");
         String letter = scanner.nextLine().toUpperCase();
         if (letter.equals("Y")) {
-            if (Preference.getPreferences(key) != null ){
-                Preference.removePreference(key);
+            if (Preference.getPreferences(USERNAME + "__" + key) != null ){
+                Preference.removePreference(USERNAME + "__" + key);
                 System.out.println(ConsoleColors.GREEN + "  " + key+ " removed" + ConsoleColors.RESET);
             }else {
                 System.out.println(ConsoleColors.RED + "  " + key+ " not available" + ConsoleColors.RESET);
