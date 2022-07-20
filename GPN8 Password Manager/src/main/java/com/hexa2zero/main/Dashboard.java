@@ -5,6 +5,7 @@ import com.hexa2zero.encryption.Encryption;
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.prefs.BackingStoreException;
 
 public class Dashboard extends Encryption implements Decryption {
     static boolean looping; /**loop state*/
@@ -88,7 +89,10 @@ public class Dashboard extends Encryption implements Decryption {
         makeEncryption(String.valueOf(password) , USERNAME + "__"+key); /**password saving key combination ---> username__key */
     }
 
-    private static void getSavedPassword(){
+    private static void getSavedPassword() throws Exception {
+        if(!Preference.getAllKeys(USERNAME)){
+            return;
+        }
         System.out.print("  Enter password key : ");
         String key = scanner.nextLine();
         String fake = Preference.getPreferences(USERNAME + "__" +key);

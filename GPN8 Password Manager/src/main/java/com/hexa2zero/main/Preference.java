@@ -2,8 +2,11 @@ package com.hexa2zero.main;
 
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Preference{
+
     static Preferences preferences = Preferences.userRoot();
 
     public static void storePreference(String key , String value) throws Exception{
@@ -28,5 +31,25 @@ public class Preference{
         }
         preferences.remove(user); /**remove user account details*/
 
+    }
+
+    public static boolean getAllKeys(String user) throws BackingStoreException {
+        String[] keysArray = preferences.keys();
+        int len = user.length() + 2;
+        int count = 0;
+        System.out.println("  Available saved passwords");
+        for (String s:keysArray) {
+            if (s.contains(user + "__")){
+                count++;
+                System.out.println("\t  " + count + ". " + s.substring(len));
+            }
+        }
+        if (count == 0) {
+            System.out.println(ConsoleColors.RED + "\t  No any password saved" + ConsoleColors.RESET);
+            return false;
+        }else {
+            System.out.println();
+            return true;
+        }
     }
 }
