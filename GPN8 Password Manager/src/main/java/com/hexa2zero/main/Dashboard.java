@@ -79,7 +79,7 @@ public class Dashboard extends Encryption implements Decryption {
             key = scanner.nextLine();
             looping = false;
             if (Preference.getPreferences(USERNAME + "__" + key) != null) {
-                System.out.print(ConsoleColors.RED + "\n  \u0021\u0021 " + key + " is already saved key. Replace it ? (Y/Any) :" + ConsoleColors.RESET);
+                System.out.print(ConsoleColors.RED + "\n  \u0021\u0021 " + key + " is already saved key. Replace it ? (Y/Any) : " + ConsoleColors.RESET);
                 String letter = scanner.nextLine().toUpperCase();
                 if (!letter.equals("Y")) {
                     looping = true;
@@ -102,7 +102,7 @@ public class Dashboard extends Encryption implements Decryption {
             getSavedPassword();
         }else {
             Decryption decryption = new Dashboard(); /**create interface object*/
-            decryption.makeDecryption( key,fake);
+            System.out.println("  Your " + key + " password : " + ConsoleColors.GREEN + decryption.makeDecryption(fake) + ConsoleColors.RESET);
         }
     }
 
@@ -150,7 +150,7 @@ public class Dashboard extends Encryption implements Decryption {
         return value;
     }
 
-    public void makeDecryption(String key , String encPassword){
+    public String makeDecryption(String encPassword){
         char[] chars = encPassword.toCharArray();
         int len = encPassword.length();
         StringBuilder password = new StringBuilder();
@@ -159,7 +159,7 @@ public class Dashboard extends Encryption implements Decryption {
             char letter =  (char) (((int) chars[i]) * 2 - (int) chars[len - (i + 1)]);
             password.append(letter);
         }
-        System.out.println("  Your " + key + " password : " + ConsoleColors.GREEN + password + ConsoleColors.RESET);
+        return String.valueOf(password);
     }
 
     protected static void removePendingScanner(){

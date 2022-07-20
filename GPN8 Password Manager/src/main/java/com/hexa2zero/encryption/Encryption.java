@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class Encryption {
 
-    protected static void makeEncryption(String realPassword , String key) throws Exception{
+    public static void makeEncryption(String realPassword , String key) throws Exception{
         Random random = new Random(); /**create random object*/
         StringBuilder password = new StringBuilder(); /**create string builder object*/
         int length = realPassword.length();

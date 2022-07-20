@@ -1,5 +1,8 @@
 package com.hexa2zero.main;
 
+import com.hexa2zero.decryption.Decryption;
+import com.hexa2zero.encryption.Encryption;
+
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -23,13 +26,13 @@ public class LoginRegister {
             } else if (Preference.getPreferences(user) != null) {
                 System.out.println(ConsoleColors.RED + "\n  \u0021\u0021 This username already reserved." + ConsoleColors.RESET);
             }else {
-                Preference.storePreference(user , password);
+//                Preference.storePreference(user , password);
+                Encryption.makeEncryption(password , user);
                 userName = user;
                 break;
             }
 
         }while (true);
-
     }
 
     private static boolean characterCheck(String user){
@@ -48,7 +51,8 @@ public class LoginRegister {
             System.out.print("  Enter password : ");
             String password = scanner.nextLine();
 
-            if (String.valueOf(Preference.getPreferences(user)).equals(password)) {
+            Decryption decryption = new Dashboard();  /**create dashboard object*/
+            if (decryption.makeDecryption(Preference.getPreferences(user)).equals(password)) {
                 userName = user;
                 return true;
             } else {
