@@ -51,7 +51,7 @@ public class LoginRegister {
 
             Decryption decryption = new Dashboard();  /**create dashboard object*/
             String encPassword = Preference.getPreferences(user) ;
-            if (decryption.makeDecryption(encPassword == null ? "": encPassword).equals(password)) {
+            if (decryption.makeDecryption(encPassword == null ? " ": encPassword).equals(password)) {
                 userName = user;
                 return true;
             } else {
