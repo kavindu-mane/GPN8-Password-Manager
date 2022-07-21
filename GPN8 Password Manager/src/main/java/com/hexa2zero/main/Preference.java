@@ -2,12 +2,14 @@ package com.hexa2zero.main;
 
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Preference{
 
     static Preferences preferences = Preferences.userRoot();
 
-    public static void storePreference(String key , String value){
+    public static void storePreference(String key , String value) throws Exception{
         preferences.put(key , value);
     }
 
@@ -19,7 +21,7 @@ public class Preference{
         preferences.remove(key);
     }
 
-    public static void removeUser(String user) throws Exception {
+    public static void removeUser(String user) throws BackingStoreException {
         String[] keysArray = preferences.keys();
 
         for (String s:keysArray) {

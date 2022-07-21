@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class Encryption {
 
-    public static void makeEncryption(String realPassword , String key){
+    public static void makeEncryption(String realPassword , String key) throws Exception{
         Random random = new Random(); /**create random object*/
         StringBuilder password = new StringBuilder(); /**create string builder object*/
         int length = realPassword.length();
@@ -32,7 +32,7 @@ public class Encryption {
         savePassword(String.valueOf(password) , key);
     }
 
-    private static void savePassword(String password , String key){
+    private static void savePassword(String password , String key) throws Exception{
         Preference.storePreference(key , password);
     }
 }
