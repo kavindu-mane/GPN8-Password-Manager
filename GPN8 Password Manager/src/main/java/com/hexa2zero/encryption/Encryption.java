@@ -32,7 +32,7 @@ public class Encryption {
         savePassword(String.valueOf(password) , key);
     }
 
-    private static void savePassword(String password , String key) throws Exception{
+    protected static void savePassword(String password , String key) throws Exception{
         Preference.storePreference(key , password);
     }
 }
