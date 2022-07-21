@@ -5,15 +5,17 @@ import com.hexa2zero.encryption.Encryption;
 
 import java.util.Random;
 import java.util.Scanner;
-import java.util.prefs.BackingStoreException;
 
 public class Dashboard extends Encryption implements Decryption {
-    static boolean looping; /**loop state*/
-    static Scanner scanner = new Scanner(System.in);
+    public static boolean looping; /**loop state*/
+    static boolean waitingOrNot = false; /**redirectToDashBoard() method working */
+    static Scanner scanner;
+    private static final Decryption decryption = new Dashboard(); /**create interface object using upcasting*/
     private static String USERNAME;
 
     Dashboard(){
         USERNAME = LoginRegister.userNameGetter();
+        scanner  = new Scanner(System.in);
     }
 
     protected void menu() throws Exception{
@@ -41,8 +43,8 @@ public class Dashboard extends Encryption implements Decryption {
                     String pass = createNewPassword();
                     savePassword(pass);
                 }
-                case 3 -> getSavedPassword();
-                case 4 -> changeSavedPassword();
+                case 3 -> getAvailablePasswords(0);
+                case 4 -> getAvailablePasswords(1);
                 case 5 -> removePassword();
                 case 6 -> changeUserPassword();
                 case 7 -> removeUser();
@@ -72,24 +74,28 @@ public class Dashboard extends Encryption implements Decryption {
     }
 
     private static void savePassword(String password) throws Exception{
-
         String key;
         do {
             System.out.print("  Enter password saving key (EX: Facebook , Gmail) : ");
             key = scanner.nextLine();
             looping = false;
-            if (Preference.getPreferences(USERNAME + "__" + key) != null) {
-                System.out.print(ConsoleColors.RED + "\n  \u0021\u0021 " + key + " is already saved key. Replace it ? (Y/Any) : " + ConsoleColors.RESET);
-                String letter = scanner.nextLine().toUpperCase();
-                if (!letter.equals("Y")) {
-                    looping = true;
-                }
+            if (key.equals("")){
+                Main.errorText( "Cannot add empty key." , "  Retry \t-----> R or r \n  Back \t\t-----> Any");
+                loopingContinueOrNot();
+            }else if (Preference.getPreferences(USERNAME + "__" + key) != null ) {
+                Main.errorText( key + " is already saved key." , "  Retry \t-----> R or r \n  Replace \t-----> Any");
+                loopingContinueOrNot();
+                waitingOrNot= false; /**for change looping & waiting states*/
             }
         }while (looping);
-        makeEncryption(String.valueOf(password) , USERNAME + "__"+key); /**password saving key combination ---> username__key */
+
+        if (!key.equals("")){
+            makeEncryption(String.valueOf(password) , USERNAME + "__"+key); /**password saving key combination ---> username__key */
+            System.out.println(ConsoleColors.GREEN + "  Password saved" + ConsoleColors.RESET);
+        }
     }
 
-    private static void getSavedPassword() throws Exception {
+    private static void getAvailablePasswords(int mode) throws Exception{
         if(!Preference.getAllKeys(USERNAME)){
             return;
         }
@@ -99,15 +105,34 @@ public class Dashboard extends Encryption implements Decryption {
 
         if (fake == null){
             System.out.println(ConsoleColors.RED + "  No password found.Recheck entered key and try again" + ConsoleColors.RESET +"\n");
-            getSavedPassword();
+            getAvailablePasswords(mode);
         }else {
-            Decryption decryption = new Dashboard(); /**create interface object*/
-            System.out.println("  Your " + key + " password : " + ConsoleColors.GREEN + decryption.makeDecryption(fake) + ConsoleColors.RESET);
+            if (mode == 0){
+                getRequestPassword(fake , key);
+            }else {
+                changeSavedPassword(key);
+            }
         }
     }
 
-    private static void changeSavedPassword(){
+    private static void getRequestPassword(String fake , String key){
+        System.out.println("  Your " + key + " password : " + ConsoleColors.GREEN + decryption.makeDecryption(fake) + ConsoleColors.RESET);
+    }
 
+    private static void changeSavedPassword(String key) throws Exception {
+        System.out.println("  ***************************************************************************************************************");
+        System.out.println("  Create password ------> C or c\n  Enter Password  ------> Any");
+        System.out.println("  ***************************************************************************************************************");
+        System.out.print("  Enter choice : ");
+        String password;
+        if (scanner.nextLine().equalsIgnoreCase("C")){
+            password = createNewPassword();
+        }else {
+            System.out.print("  Enter password : ");
+            password = scanner.nextLine();
+        }
+        makeEncryption(password , USERNAME + "__"+key); /**password saving key combination ---> username__key */
+        System.out.println(ConsoleColors.GREEN + "  Password changed" + ConsoleColors.RESET);
     }
 
     private static void removePassword(){
@@ -125,12 +150,49 @@ public class Dashboard extends Encryption implements Decryption {
         }
     }
 
-    private static void changeUserPassword(){
+    private static void changeUserPassword() throws Exception{
+        do {
+            System.out.print("  Enter current password : ");
+            String password = scanner.nextLine();
+            if (checkPassword(password)) {
+                do {
+                    System.out.print("  Enter new password : ");
+                    password = scanner.nextLine();
+                    if (password.length() < 9) {
+                        System.out.println(ConsoleColors.RED + "  Password must be greater than 8 characters\n" + ConsoleColors.RESET);
+                    }else {
+                        break;
+                    }
+                }while (true);
 
+                makeEncryption(password , USERNAME);
+                System.out.println(ConsoleColors.GREEN + "  Account password changed" + ConsoleColors.RESET);
+            } else {
+                Main.errorText("Incorrect Username Password combination.","  Retry \t-----> R or r \n  Back \t\t-----> Any");
+                loopingContinueOrNot();
+            }
+        }while (looping);
     }
 
-    private static void removeUser(){
+    private static void removeUser() throws Exception{
+        do {
+            System.out.print("  Enter current password : ");
+            String password = scanner.nextLine();
+            if (checkPassword(password)) {
+                System.out.print(ConsoleColors.RED + "\n  \u0021\u0021 Are you sure delete " + USERNAME + " ? (Y/Any) : " + ConsoleColors.RESET);
+                if (scanner.nextLine().equalsIgnoreCase("Y")) {
+                    Preference.removeUser(USERNAME);
+                    Main.getStartMode();
+                }else {
+                    looping = false;
+                    waitingOrNot = true;
+                }
 
+            }else {
+                Main.errorText("Incorrect Username Password combination." , "  Retry \t-----> R or r \n  Back \t\t-----> Any");
+                loopingContinueOrNot();
+            }
+        }while (looping);
     }
 
     private static int getIntValue(){
@@ -168,8 +230,26 @@ public class Dashboard extends Encryption implements Decryption {
         }
     }
 
+    private static boolean checkPassword(String password){
+        return decryption.makeDecryption(Preference.getPreferences(USERNAME)).equals(password);
+    }
+
     private static void redirectToDashBoard(){
-        System.out.print("\n  Press enter to continue... ");
-        removePendingScanner();
+        if (!waitingOrNot){
+            System.out.print("\n  Press enter to continue... ");
+            removePendingScanner();
+        }else {
+            waitingOrNot = false;
+        }
+    }
+
+    protected static void loopingContinueOrNot(){
+        if (scanner.nextLine().equalsIgnoreCase("R")) {
+            looping = true;
+            System.out.println();
+        } else {
+            looping = false;
+            waitingOrNot = true;
+        }
     }
 }

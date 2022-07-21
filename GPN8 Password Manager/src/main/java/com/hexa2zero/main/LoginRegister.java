@@ -26,7 +26,6 @@ public class LoginRegister {
             } else if (Preference.getPreferences(user) != null) {
                 System.out.println(ConsoleColors.RED + "\n  \u0021\u0021 This username already reserved." + ConsoleColors.RESET);
             }else {
-//                Preference.storePreference(user , password);
                 Encryption.makeEncryption(password , user);
                 userName = user;
                 break;
@@ -43,7 +42,6 @@ public class LoginRegister {
     protected boolean login() throws Exception {
         Main.clearConsole();
         System.out.println("\n\n  " + ConsoleColors.WHITE_BACKGROUND_BLACK + "**************************************************** Login ****************************************************" + ConsoleColors.RESET);
-        boolean stop ;
         do {
             System.out.print("  Enter username : ");
             String user = scanner.nextLine();
@@ -52,28 +50,19 @@ public class LoginRegister {
             String password = scanner.nextLine();
 
             Decryption decryption = new Dashboard();  /**create dashboard object*/
-            if (decryption.makeDecryption(Preference.getPreferences(user)).equals(password)) {
+            String encPassword = Preference.getPreferences(user) ;
+            if (decryption.makeDecryption(encPassword == null ? "": encPassword).equals(password)) {
                 userName = user;
                 return true;
             } else {
-                System.out.println(ConsoleColors.RED + "\n  \u0021\u0021 Incorrect Username Password combination." + ConsoleColors.RESET);
-                System.out.println("  ***************************************************************************************************************");
-                System.out.print("  Retry \t-----> R or r \n  Exit \t\t-----> Any\n");
-                System.out.println("  ***************************************************************************************************************");
-                System.out.print("  Enter selection : ");
-                if (scanner.nextLine().equalsIgnoreCase("R")) {
-                    stop = true;
-                    System.out.println();
-                }else {
-                    stop = false;
-                }
+                Main.errorText("Incorrect Username Password combination.","  Retry \t-----> R or r \n  Exit \t\t-----> Any");
+                Dashboard.loopingContinueOrNot();
             }
-        }while (stop);
+        }while (Dashboard.looping);
         return false;
     }
 
     protected static String userNameGetter(){  /**for return private username filed*/
         return userName;
     }
-
 }
