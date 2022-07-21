@@ -2,10 +2,8 @@ package com.hexa2zero.main;
 
 import com.hexa2zero.decryption.Decryption;
 import com.hexa2zero.encryption.Encryption;
-
 import java.util.Random;
 import java.util.Scanner;
-import java.util.prefs.BackingStoreException;
 
 public class Dashboard extends Encryption implements Decryption {
     static boolean looping; /**loop state*/
@@ -71,7 +69,7 @@ public class Dashboard extends Encryption implements Decryption {
         return String.valueOf(password);
     }
 
-    private static void savePassword(String password) throws Exception{
+    private static void savePassword(String password){
 
         String key;
         do {
