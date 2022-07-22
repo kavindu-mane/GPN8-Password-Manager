@@ -73,7 +73,7 @@ public class Dashboard extends Encryption implements Decryption {
         return String.valueOf(password);
     }
 
-    private static void savePassword(String password) throws Exception{
+    private static void savePassword(String password){
         String key;
         do {
             System.out.print("  Enter password saving key (EX: Facebook , Gmail) : ");
@@ -119,7 +119,7 @@ public class Dashboard extends Encryption implements Decryption {
         System.out.println("  Your " + key + " password : " + ConsoleColors.GREEN + decryption.makeDecryption(fake) + ConsoleColors.RESET);
     }
 
-    private static void changeSavedPassword(String key) throws Exception {
+    private static void changeSavedPassword(String key) {
         System.out.println("  ***************************************************************************************************************");
         System.out.println("  Create password ------> C or c\n  Enter Password  ------> Any");
         System.out.println("  ***************************************************************************************************************");
@@ -150,7 +150,7 @@ public class Dashboard extends Encryption implements Decryption {
         }
     }
 
-    private static void changeUserPassword() throws Exception{
+    private static void changeUserPassword(){
         do {
             System.out.print("  Enter current password : ");
             String password = scanner.nextLine();
