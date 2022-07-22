@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="GPN8 Password Manager" />
+        <module name="GPN8-Password-Manager" />
       </profile>
     </annotationProcessing>
   </component>
