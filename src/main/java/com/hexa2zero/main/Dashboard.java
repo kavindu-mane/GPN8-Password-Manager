@@ -212,6 +212,7 @@ public class Dashboard extends Encryption implements Decryption {
         return value;
     }
 
+    @Override
     public String makeDecryption(String encPassword){
         char[] chars = encPassword.toCharArray();
         int len = encPassword.length();
