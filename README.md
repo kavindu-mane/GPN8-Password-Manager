@@ -22,7 +22,7 @@ Simply say, you can create a complex password, encrypt it and save it through th
 
     java -jar GPN8-Password-Manager.jar
     
-#### For Wimdows 
+#### For Windows 
     
    ##### _Method-1_
 
