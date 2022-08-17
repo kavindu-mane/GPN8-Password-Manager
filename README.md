@@ -31,7 +31,7 @@ Simply say, you can create a complex password, encrypt it and save it through th
    
    ##### _Method-2_
 
-   * Download GPN8-Password-Manager-Installable.exe file
+   * Download [GPN8 Password Manager installable.exe](https://github.com/kavindu-mane/GPN8-Password-Manager/raw/main/GPN8%20Password%20Manager%20installable.exe) file
    * Double click and install. 
 
 #### Password manager by CST Group 8
