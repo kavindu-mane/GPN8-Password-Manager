@@ -17,7 +17,7 @@ Simply say, you can create a complex password, encrypt it and save it through th
 
 #### For all operating systems
 
-   * Download GPN8-Password-Manager.jar file
+   * Download [GPN8-Password-Manager.jar](https://github.com/kavindu-mane/GPN8-Password-Manager/raw/main/GPN8-Password-Manager.jar) file
    * Run bellow command in terminal / CMD (Relevant location)
 
     java -jar GPN8-Password-Manager.jar
@@ -26,7 +26,7 @@ Simply say, you can create a complex password, encrypt it and save it through th
     
    ##### _Method-1_
 
-   * Download GPN8-Password-Manager.exe file
+   * Download [GPN8 Password Manager.exe](https://github.com/kavindu-mane/GPN8-Password-Manager/raw/main/GPN8%20Password%20Manager.exe) file
    * Double click and run it.
    
    ##### _Method-2_
