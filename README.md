@@ -13,4 +13,25 @@ Here we have identified two main problems that people face.
 As a solution to these problems, our team created this tool called ***“Password Manager”***. 
 Simply say, you can create a complex password, encrypt it and save it through this tool.
 
+### Download and Run/Install
+
+#### For all operating systems
+
+   * Download GPN8-Password-Manager.jar file
+   * Run bellow command in terminal / CMD (Relevant location)
+
+    java -jar GPN8-Password-Manager.jar
+    
+#### For Wimdows 
+    
+   ##### _Method-1_
+
+   * Download GPN8-Password-Manager.exe file
+   * Double click and run it.
+   
+   ##### _Method-2_
+
+   * Download GPN8-Password-Manager-Installable.exe file
+   * Double click and install. 
+
 #### Password manager by CST Group 8
